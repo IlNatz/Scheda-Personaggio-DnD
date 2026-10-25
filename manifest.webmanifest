@@ -1,0 +1,32 @@
+{
+    "name":  "Ultimo Raggio · Scheda",
+    "short_name":  "Ultimo Raggio",
+    "description":  "La scheda del personaggio della campagna Ultimo Raggio.",
+    "lang":  "it",
+    "start_url":  "./",
+    "scope":  "./",
+    "display":  "standalone",
+    "orientation":  "portrait",
+    "background_color":  "#15120e",
+    "theme_color":  "#15120e",
+    "icons":  [
+                  {
+                      "src":  "icona-192.png",
+                      "sizes":  "192x192",
+                      "type":  "image/png",
+                      "purpose":  "any"
+                  },
+                  {
+                      "src":  "icona-512.png",
+                      "sizes":  "512x512",
+                      "type":  "image/png",
+                      "purpose":  "any"
+                  },
+                  {
+                      "src":  "icona-maschera.png",
+                      "sizes":  "512x512",
+                      "type":  "image/png",
+                      "purpose":  "maskable"
+                  }
+              ]
+}
