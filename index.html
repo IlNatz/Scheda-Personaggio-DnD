@@ -1386,7 +1386,6 @@ const AZ = {
   scaricafile(d) { const tutti = d.v === "tutti"; const nome = (tutti ? "Ultimo Raggio · personaggi" : "Ultimo Raggio · " + (P().nome || "personaggio")).replace(/[\\/:*?"<>|]/g, "") + ".json"; salvaFile(nome, codice(tutti)); },
   incolla() { foglio("Incolla il codice di una scheda", `<textarea class="campo" id="inc-t" style="min-height:180px" placeholder="Incolla qui il codice"></textarea><div class="riga fine" style="margin-top:10px"><button class="btn forte" data-a="incollaok">Carica</button></div>`); },
   incollaok() { leggiImport($("#inc-t").value); },
-  offline() { scaricaOffline(); },
   installa() { if (!installaEvento) return; installaEvento.prompt(); installaEvento.userChoice.finally(() => { installaEvento = null; chiudiFoglio(); }); }
 };
 function aggiungiArma(v) {
@@ -1415,7 +1414,6 @@ function menu() {
     <div class="riga"><button class="btn oro" data-a="esporta" data-v="uno">Salva questo personaggio</button><button class="btn" data-a="esporta" data-v="tutti">Salva tutti</button></div>
     <div class="riga" style="margin-top:8px"><button class="btn" data-a="incolla">Incolla un codice</button><button class="btn" data-a="importa">Carica da un file</button></div>
     ${window.WEBAPP ? `<h2 class="sez">L'app</h2><p class="nota">${installaEvento ? "Installala sul telefono: avrà la sua icona e funzionerà anche senza rete." : "Se non è ancora installata, dal menu del browser scegli «Installa app» o «Aggiungi a schermata Home»."} ${persistente ? "I personaggi sono salvati in modo permanente su questo dispositivo." : ""}</p>${installaEvento ? `<div class="riga"><button class="btn forte" data-a="installa">Installa l'app</button></div>` : ""}` : ""}
-    ${location.protocol !== "file:" && !window.WEBAPP ? `<h2 class="sez">Senza rete</h2><p class="nota">Un file unico da aprire con il browser del telefono anche senza connessione. Ha le sue schede, separate da queste: portaci dentro i personaggi con «Carica da un file».</p><div class="riga"><button class="btn" data-a="offline">Scarica la scheda senza rete</button></div>` : ""}
     <p class="nota" style="margin-top:16px">Dati del manuale aggiornati al ${esc(D.generato)}.</p>${D.srd ? `<p class="nota" style="font-size:13px">${esc(D.srd)}</p>` : ""}`);
 }
 let dl = undefined;
@@ -1444,11 +1442,6 @@ function leggiImport(t) {
   } catch (e) { foglio("Non riesco a leggerlo", `<p>Il file o il codice non è una scheda dell'Ultimo Raggio. Controlla di aver scelto il file giusto, salvato da «Salva questo personaggio».</p>`); }
 }
 $("#importa-file").addEventListener("change", e => { const f = e.target.files && e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => leggiImport(String(r.result)); r.readAsText(f); e.target.value = ""; });
-async function scaricaOffline() {
-  statoSalva("preparo il file…", false);
-  try { const r = await fetch("scheda-senza-rete.html"); if (!r.ok) throw new Error(r.status); const t = await r.text(); await salvaFile("Ultimo Raggio · Scheda (senza rete).html", t); }
-  catch (e) { statoSalva("download non riuscito", true); }
-}
 
 // ------------------------------------------------------------ gli ascoltatori
 document.addEventListener("input", e => { const el = e.target; if (!el.dataset || !el.dataset.k) return; setK(el); });
